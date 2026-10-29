@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="geoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1020"/>
+      <stop offset="100%" stop-color="#070c18"/>
+    </linearGradient>
+    <linearGradient id="barLag" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="barAbj" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <linearGradient id="barPh" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="barKno" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="barIbd" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#67e8f9"/>
+    </linearGradient>
+
+    <style>
+      .geo-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 800; fill: #ffffff; }
+      .city-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; fill: #f8fafc; }
+      .sub-stat { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; fill: #94a3b8; }
+      .val-text { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; font-weight: 700; fill: #ffffff; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="460" rx="16" fill="url(#geoBg)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Top Title Bar -->
+  <g transform="translate(40, 36)">
+    <text x="0" y="0" class="geo-title" font-size="20">Regional Performance &amp; Geospatial Banking Activity</text>
+    <text x="0" y="24" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#64748b">
+      City-wise transaction volume, customer density, active vs. dormant ratios across urban hubs
+    </text>
+  </g>
+
+  <!-- Left Column: Horizontal Volume Rank Bars -->
+  <g transform="translate(40, 85)">
+    <!-- Container -->
+    <rect width="580" height="340" rx="14" fill="#0d172b" stroke="#1e293b" stroke-width="1.2"/>
+    <text x="24" y="32" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="700" fill="#e2e8f0">
+      Transaction Volume by City (in Millions ₦)
+    </text>
+    <text x="556" y="32" text-anchor="end" class="sub-stat" fill="#64748b">12-Month Inflow/Outflow</text>
+
+    <!-- City 1: Lagos -->
+    <g transform="translate(24, 60)">
+      <text x="0" y="16" class="city-label">Lagos</text>
+      <text x="0" y="32" class="sub-stat">428 Accts · 92% Active</text>
+      <rect x="180" y="5" width="310" height="26" rx="6" fill="url(#barLag)"/>
+      <text x="500" y="23" class="val-text">₦142.8M</text>
+    </g>
+
+    <!-- City 2: Abuja -->
+    <g transform="translate(24, 112)">
+      <text x="0" y="16" class="city-label">Abuja (FCT)</text>
+      <text x="0" y="32" class="sub-stat">312 Accts · 89% Active</text>
+      <rect x="180" y="5" width="245" height="26" rx="6" fill="url(#barAbj)"/>
+      <text x="435" y="23" class="val-text">₦98.4M</text>
+    </g>
+
+    <!-- City 3: Port Harcourt -->
+    <g transform="translate(24, 164)">
+      <text x="0" y="16" class="city-label">Port Harcourt</text>
+      <text x="0" y="32" class="sub-stat">245 Accts · 86% Active</text>
+      <rect x="180" y="5" width="185" height="26" rx="6" fill="url(#barPh)"/>
+      <text x="375" y="23" class="val-text">₦74.2M</text>
+    </g>
+
+    <!-- City 4: Kano -->
+    <g transform="translate(24, 216)">
+      <text x="0" y="16" class="city-label">Kano</text>
+      <text x="0" y="32" class="sub-stat">198 Accts · 78% Active</text>
+      <rect x="180" y="5" width="140" height="26" rx="6" fill="url(#barKno)"/>
+      <text x="330" y="23" class="val-text">₦56.1M</text>
+    </g>
+
+    <!-- City 5: Ibadan -->
+    <g transform="translate(24, 268)">
+      <text x="0" y="16" class="city-label">Ibadan</text>
+      <text x="0" y="32" class="sub-stat">165 Accts · 81% Active</text>
+      <rect x="180" y="5" width="115" height="26" rx="6" fill="url(#barIbd)"/>
+      <text x="305" y="23" class="val-text">₦44.6M</text>
+    </g>
+  </g>
+
+  <!-- Right Column: Regional Key Metrics & Dormancy Risk Breakdown -->
+  <g transform="translate(640, 85)">
+    <!-- Container -->
+    <rect width="420" height="340" rx="14" fill="#0d172b" stroke="#1e293b" stroke-width="1.2"/>
+
+    <g transform="translate(24, 28)">
+      <text x="0" y="0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="700" fill="#e2e8f0">
+        Regional Dormancy &amp; Churn Risk
+      </text>
+      <text x="0" y="18" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#64748b">
+        Ratio of active vs. dormant accounts (>12 months no txn)
+      </text>
+
+      <!-- Donut / Stacked Bar Visual -->
+      <g transform="translate(0, 36)">
+        <!-- Stacked Bar for Total Portfolio -->
+        <text x="0" y="12" class="sub-stat" fill="#cbd5e1">Portfolio Health Breakdown</text>
+        <rect x="0" y="22" width="372" height="24" rx="6" fill="#1e293b"/>
+        <!-- Active Portion (84.2%) -->
+        <rect x="0" y="22" width="313" height="24" rx="6" fill="#10b981"/>
+        <!-- Dormant Portion (15.8%) -->
+        <rect x="313" y="22" width="59" height="24" rx="6" fill="#f43f5e"/>
+
+        <text x="8" y="38" font-family="'SFMono-Regular', monospace" font-size="10.5" font-weight="700" fill="#ffffff">Active: 84.2%</text>
+        <text x="372" y="38" text-anchor="end" font-family="'SFMono-Regular', monospace" font-size="10.5" font-weight="700" fill="#ffffff">15.8%</text>
+      </g>
+
+      <!-- 3 Strategic Regional Insights -->
+      <g transform="translate(0, 115)">
+        <rect width="372" height="52" rx="8" fill="#111c33" stroke="#1e2d4d" stroke-width="1"/>
+        <circle cx="16" cy="26" r="6" fill="#00f2fe"/>
+        <text x="32" y="20" font-family="-apple-system, sans-serif" font-size="11.5" font-weight="700" fill="#38bdf8">High-Value Concentration</text>
+        <text x="32" y="38" font-family="-apple-system, sans-serif" font-size="11" fill="#94a3b8">Lagos &amp; Abuja account for 59.8% of aggregate bank volume.</text>
+      </g>
+
+      <g transform="translate(0, 178)">
+        <rect width="372" height="52" rx="8" fill="#111c33" stroke="#1e2d4d" stroke-width="1"/>
+        <circle cx="16" cy="26" r="6" fill="#f59e0b"/>
+        <text x="32" y="20" font-family="-apple-system, sans-serif" font-size="11.5" font-weight="700" fill="#fbbf24">Salary Inflow Anchors</text>
+        <text x="32" y="38" font-family="-apple-system, sans-serif" font-size="11" fill="#94a3b8">Consistent monthly salary credits drop churn risk by 74%.</text>
+      </g>
+
+      <g transform="translate(0, 241)">
+        <rect width="372" height="52" rx="8" fill="#111c33" stroke="#1e2d4d" stroke-width="1"/>
+        <circle cx="16" cy="26" r="6" fill="#ec4899"/>
+        <text x="32" y="20" font-family="-apple-system, sans-serif" font-size="11.5" font-weight="700" fill="#f472b6">Reactivation Opportunity</text>
+        <text x="32" y="38" font-family="-apple-system, sans-serif" font-size="11" fill="#94a3b8">158 dormant accounts hold ~₦24.3M in low-velocity balances.</text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Customer Segmentation & Transaction Intelligence Suite</title>
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- External Data Bundle -->
+  <script src="dashboard_data.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-surface: #0e1628;
+      --bg-card: rgba(16, 26, 48, 0.7);
+      --border-card: rgba(30, 48, 80, 0.6);
+      --border-accent: rgba(0, 242, 254, 0.3);
+      
+      --cyan-neon: #00f2fe;
+      --cyan-glow: rgba(0, 242, 254, 0.25);
+      --emerald-neon: #10b981;
+      --purple-neon: #a855f7;
+      --amber-neon: #f59e0b;
+      --rose-neon: #f43f5e;
+      --blue-neon: #38bdf8;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 32px 64px 32px;
+    }
+
+    /* Header Nav */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-card);
+      margin-bottom: 28px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(56, 189, 248, 0.1));
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .author-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .author-chip {
+      background: #111e38;
+      border: 1px solid #1e3054;
+      padding: 6px 14px;
+      border-radius: 20px;
+      color: #93c5fd;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .author-chip:hover {
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 20px 22px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan-neon), var(--purple-neon));
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .kpi-sub {
+      font-size: 11.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kpi-positive { color: var(--emerald-neon); }
+    .kpi-neutral { color: var(--blue-neon); }
+    .kpi-warn { color: var(--amber-neon); }
+
+    /* Tabs Navigation */
+    .tabs-nav {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-card);
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 10px 20px;
+      font-size: 13.5px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-btn.active {
+      color: #ffffff;
+      background: rgba(0, 242, 254, 0.12);
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.2);
+    }
+
+    /* Tab Content Areas */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Card Panels */
+    .panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-subtitle {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Chart Layouts */
+    .charts-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 320px;
+      width: 100%;
+    }
+
+    /* RFM Matrix Visual Grid */
+    .rfm-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .rfm-card {
+      background: #0f192e;
+      border: 1px solid #1e2f4f;
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .rfm-card:hover {
+      border-color: var(--cyan-neon);
+      transform: translateY(-2px);
+    }
+
+    .rfm-card-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .rfm-badge {
+      font-size: 10.5px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .rfm-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      min-height: 48px;
+    }
+
+    .rfm-action-box {
+      background: #081224;
+      border: 1px dashed #22375f;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11.5px;
+      color: #93c5fd;
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border-card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: #111c33;
+      color: #cbd5e1;
+      padding: 12px 16px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-card);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(30, 48, 80, 0.4);
+      color: #f1f5f9;
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background: rgba(0, 242, 254, 0.04);
+    }
+
+    /* Tag pills */
+    .pill {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .pill-champion { background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.4); }
+    .pill-loyal { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .pill-potential { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .pill-single { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .pill-at-risk { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .pill-dormant { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+
+    /* SQL Runner Playground */
+    .sql-selector-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    select, input[type="text"] {
+      background: #0f192e;
+      border: 1px solid #1e3054;
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: var(--cyan-neon);
+    }
+
+    .sql-code-box {
+      background: #080d1a;
+      border: 1px solid #1c2b4a;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: #7dd3fc;
+      overflow-x: auto;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .btn-run {
+      background: linear-gradient(135deg, #00f2fe, #0284c7);
+      color: #030712;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-run:hover {
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-card);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 16px; }
+      .charts-grid-2 { grid-template-columns: 1fr; }
+      .brand-title { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div>
+        <div class="brand-title">
+          🏦 Bank Customer Segmentation &amp; Analytics Suite
+          <span class="brand-badge">SQL + ML INTELLIGENCE</span>
+        </div>
+        <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+          Simulated Multi-tier Behavioral Analytics, Algorithmic RFM Clustering &amp; Regional Outflow Forensics
+        </div>
+      </div>
+
+      <div class="author-meta">
+        <a href="https://github.com/akshaysharma2005" target="_blank" class="author-chip">
+          <span>👨‍💻 M Akshay Sharma</span>
+          <span style="font-size: 11px; opacity: 0.7;">@akshaysharma2005</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- 4 High Impact KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Gross Transaction Volume</div>
+        <div class="kpi-value" id="kpi-volume">₦1.86B</div>
+        <div class="kpi-sub kpi-positive">▲ +18.4% Annual Velocity</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Customer Profiles</div>
+        <div class="kpi-value" id="kpi-customers">500</div>
+        <div class="kpi-sub kpi-neutral">Across 12 Major Cities</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Accounts Managed</div>
+        <div class="kpi-value" id="kpi-accounts">1,050</div>
+        <div class="kpi-sub kpi-positive">Savings, Current &amp; Loan</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Portfolio Health Status</div>
+        <div class="kpi-value" id="kpi-active">84.2%</div>
+        <div class="kpi-sub kpi-warn">15.8% Inactive &gt; 12 Months</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('overview')">
+        📊 Executive Overview &amp; Trends
+      </button>
+      <button class="tab-btn" onclick="switchTab('rfm')">
+        👑 RFM Segmentation Matrix
+      </button>
+      <button class="tab-btn" onclick="switchTab('regional')">
+        🌍 Geospatial &amp; Regional Activity
+      </button>
+      <button class="tab-btn" onclick="switchTab('customers')">
+        🔍 Customer Explorer &amp; Tiers
+      </button>
+      <button class="tab-btn" onclick="switchTab('sql')">
+        ⚡ Live SQL Query Playground
+      </button>
+    </div>
+
+    <!-- TAB 1: EXECUTIVE OVERVIEW -->
+    <div id="tab-overview" class="tab-content active">
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Monthly Capital Velocity (Inflow vs. Outflow)</div>
+              <div class="panel-subtitle">Credit deposits vs debit expenditures in ₦ Millions</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="monthlyChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Customer Behavioral Segment Share</div>
+              <div class="panel-subtitle">Algorithmic distribution across portfolio</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="segmentDonutChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Top Retail Channels &amp; Transaction Descriptions</div>
+            <div class="panel-subtitle">Most utilized banking services by transaction frequency</div>
+          </div>
+        </div>
+        <div class="chart-container" style="height: 260px;">
+          <canvas id="channelBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: RFM SEGMENTATION MATRIX -->
+    <div id="tab-rfm" class="tab-content">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Behavioral RFM Framework &amp; Strategic Playbooks</div>
+            <div class="panel-subtitle">Customers clustered by Recency (R), Frequency (F), and Monetary (M) quintiles</div>
+          </div>
+        </div>
+
+        <div class="rfm-cards-grid">
+          <div class="rfm-card">
+            <div class="rfm-card-hdr">
+              <span style="font-weight: 700; color: var(--cyan-neon); font-size: 16px;">👑 Champions</span>
+              <span class="rfm-badge" style="background:#082f49; color:#38bdf8;">R:5 | F:5 | M:5</span>
+            </div>
+            <div class="rfm-desc">
+              Highest-value patrons with continuous transactions and top-tier balance holding. Primary driver of branch net interest margin.
+            </div>
+            <div class="rfm-action-box">
+              <strong>STRATEGY:</strong> Assigned dedicated wealth relationship managers, zero-fee premium cards &amp; FX allowances.
+            </div>
+          </div>
+
+          <div class="rfm-card">
+            <div class="rfm-card-hdr">
+              <span style="font-weight: 700; color: var(--emerald-neon); font-size: 16px;">💎 Loyal Customers</span>
+              <span class="rfm-badge" style="background:#064e3b; color:#34d399;">R:4-5 | F:4 | M:4</span>
+            </div>
+            <div class="rfm-desc">
+              Consistent monthly account activity, salary earners, and regular debit card users. Low churn propensity.
+            </div>
+            <div class="rfm-action-box">
+              <strong>STRATEGY:</strong> Upsell fixed-deposit tenures, mutual funds, and personalized auto/home loan credit lines.
+            </div>
+          </div>
+
+          <div class="rfm-card">
+            <div class="rfm-card-hdr">
+              <span style="font-weight: 700; color: var(--purple-neon); font-size: 16px;">🚀 Potential Loyalists</span>
+              <span class="rfm-badge" style="background:#3b0764; color:#c084fc;">R:4-5 | F:2-3 | M:3</span>
+            </div>
+            <div class="rfm-desc">
+              Recent signups or high transaction count users with moderate average ticket size. Demonstrating acceleration.
+            </div>
+            <div class="rfm-action-box">
+              <strong>STRATEGY:</strong> Mobile app rewards, recurring savings incentives, cashback on utility bill payments.
+            </div>
+          </div>
+
+          <div class="rfm-card">
+            <div class="rfm-card-hdr">
+              <span style="font-weight: 700; color: var(--blue-neon); font-size: 16px;">🌱 Single Product Users</span>
+              <span class="rfm-badge" style="background:#172554; color:#93c5fd;">R:3-4 | F:1-2 | M:2</span>
+            </div>
+            <div class="rfm-desc">
+              Account holders operating only a single product (savings or current). Prime candidates for cross-product expansion.
+            </div>
+            <div class="rfm-action-box">
+              <strong>STRATEGY:</strong> Offer zero-deposit collateral for secondary accounts and bundled digital credit facilities.
+            </div>
+          </div>
+
+          <div class="rfm-card">
+            <div class="rfm-card-hdr">
+              <span style="font-weight: 700; color: var(--amber-neon); font-size: 16px;">⚠️ At Risk (Need Attention)</span>
+              <span class="rfm-badge" style="background:#451a03; color:#fbbf24;">R:2-3 | F:3-4 | M:4</span>
+            </div>
+            <div class="rfm-desc">
+              Former high-velocity depositors who have dropped transaction cadence over the last 90–180 days. Risk of competitor churn.
+            </div>
+            <div class="rfm-action-box">
+              <strong>STRATEGY:</strong> Proactive account officer outreach, survey friction points, provide reduced transfer fees.
+            </div>
+          </div>
+
+          <div class="rfm-card">
+            <div class="rfm-card-hdr">
+              <span style="font-weight: 700; color: var(--rose-neon); font-size: 16px;">💤 Dormant Accounts</span>
+              <span class="rfm-badge" style="background:#4c0519; color:#fb7185;">R:1 | F:1 | M:1</span>
+            </div>
+            <div class="rfm-desc">
+              Zero transaction entries in over 12 months. Represents dormant balance liabilities and compliance monitoring drag.
+            </div>
+            <div class="rfm-action-box">
+              <strong>STRATEGY:</strong> Automated WhatsApp/SMS reactivation links, frictionless digital KYC re-verification bonus.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: REGIONAL & GEOSPATIAL -->
+    <div id="tab-regional" class="tab-content">
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">City-Wise Gross Transaction Volume</div>
+              <div class="panel-subtitle">Total financial throughput per metropolitan center (₦ Millions)</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="cityVolumeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Regional Customer Count &amp; Average Ticket Size</div>
+              <div class="panel-subtitle">Market penetration by geographic cluster</div>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="cityCustomerChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: CUSTOMER EXPLORER -->
+    <div id="tab-customers" class="tab-content">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Customer Analytics Directory</div>
+            <div class="panel-subtitle">Search, filter, and inspect customer RFM scores and account balances</div>
+          </div>
+          <div>
+            <input type="text" id="custSearch" placeholder="Search by name or city..." onkeyup="filterCustomers()" style="width: 260px;">
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table id="customerTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>Recency (Days)</th>
+                <th>Frequency</th>
+                <th>Total Volume (₦)</th>
+                <th>Total Balance (₦)</th>
+                <th>Segment</th>
+              </tr>
+            </thead>
+            <tbody id="custTableBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: SQL QUERY PLAYGROUND -->
+    <div id="tab-sql" class="tab-content">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">⚡ Interactive SQL Query Benchmarking Playground</div>
+            <div class="panel-subtitle">Inspect query structures, business purposes, and verified execution results</div>
+          </div>
+        </div>
+
+        <div class="sql-selector-bar">
+          <label style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Select Query:</label>
+          <select id="querySelect" onchange="loadQueryDetails()" style="flex: 1; max-width: 500px;">
+            <option value="1">Q01: Total Spend Per Customer (Debit Outflow)</option>
+            <option value="2">Q02: Salary Trend Analysis (12-Month Liquidity Benchmark)</option>
+            <option value="3">Q03: Most Active Accounts by Transaction Count</option>
+            <option value="4">Q04: Most Active Accounts by Transaction Volume</option>
+            <option value="5">Q05: Monthly Transaction Breakdown (Inflow vs Outflow)</option>
+            <option value="6">Q06: Yearly Transaction Growth &amp; Velocity</option>
+            <option value="7">Q07: Top 20 High-Value Customers (Credit Inflow)</option>
+            <option value="8">Q08: Dormant Accounts Identification (&gt;12 Months Inactivity)</option>
+            <option value="9">Q09: Single-Product Customers (Cross-Sell Index)</option>
+            <option value="10">Q10: Channel &amp; Payment Description Frequency</option>
+            <option value="11">Q11: City-Wise Banking Performance Metrics</option>
+            <option value="12">Q12: Highest Spender Per City (Window Function CTE)</option>
+            <option value="13">Q13: Cumulative Running Balance (Window Cash Flow)</option>
+            <option value="14">Q14: Month-over-Month Growth Rate (MoM % via LAG)</option>
+            <option value="15">Q15: Customer Lifetime Value (CLV) &amp; Margin Estimation</option>
+          </select>
+
+          <button class="btn-run" onclick="executeSelectedQuery()">
+            <span>▶</span> Run Query Engine
+          </button>
+        </div>
+
+        <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 8px;" id="queryPurpose">
+          <strong>Purpose:</strong> Quantifies customer outflow across all subsidiary accounts to identify high-spend retail accounts.
+        </div>
+
+        <pre class="sql-code-box" id="queryCode">-- SQL Query Code</pre>
+
+        <div class="panel-title" style="font-size: 14px; margin-bottom: 10px;">
+          Execution Output (Verified in SQLite &amp; PostgreSQL):
+        </div>
+        <div class="table-responsive">
+          <table id="queryResultTable">
+            <thead id="queryResultHead"></thead>
+            <tbody id="queryResultBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        <strong>Bank Segmentation &amp; Transaction Intelligence Suite</strong> · Designed &amp; Engineered by 
+        <a href="https://github.com/akshaysharma2005" target="_blank" style="color: var(--cyan-neon); text-decoration: none; font-weight: 600;">
+          M Akshay Sharma
+        </a>
+      </div>
+      <div>
+        Repository: <a href="https://github.com/akshaysharma2005/Bank-Segmentation-Analysis" target="_blank" style="color: #93c5fd; text-decoration: none;">akshaysharma2005/Bank-Segmentation-Analysis</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Tab Switching Logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      const selectedBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (selectedBtn) selectedBtn.classList.add('active');
+      
+      const targetContent = document.getElementById(`tab-${tabId}`);
+      if (targetContent) targetContent.classList.add('active');
+    }
+
+    // Initialize Dashboard with BANK_DATA
+    window.addEventListener('DOMContentLoaded', () => {
+      initCharts();
+      populateCustomerTable();
+      loadQueryDetails();
+      executeSelectedQuery();
+    });
+
+    function initCharts() {
+      if (typeof BANK_DATA === 'undefined') return;
+
+      // 1. Monthly Trend Chart
+      const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+      new Chart(monthlyCtx, {
+        type: 'line',
+        data: {
+          labels: BANK_DATA.monthly.map(m => m.month),
+          datasets: [
+            {
+              label: 'Credit Inflow (₦M)',
+              data: BANK_DATA.monthly.map(m => m.credit),
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              fill: true,
+              tension: 0.35,
+              borderWidth: 2.5
+            },
+            {
+              label: 'Debit Outflow (₦M)',
+              data: BANK_DATA.monthly.map(m => m.debit),
+              borderColor: '#00f2fe',
+              backgroundColor: 'rgba(0, 242, 254, 0.08)',
+              fill: true,
+              tension: 0.35,
+              borderWidth: 2.5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } }
+          },
+          scales: {
+            x: { ticks: { color: '#64748b', maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+
+      // 2. Segment Donut Chart
+      const donutCtx = document.getElementById('segmentDonutChart').getContext('2d');
+      new Chart(donutCtx, {
+        type: 'doughnut',
+        data: {
+          labels: BANK_DATA.segments.map(s => s.segment),
+          datasets: [{
+            data: BANK_DATA.segments.map(s => s.count),
+            backgroundColor: ['#00f2fe', '#10b981', '#a855f7', '#38bdf8', '#f59e0b', '#f43f5e'],
+            borderWidth: 2,
+            borderColor: '#0b0f19'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } }
+          },
+          cutout: '65%'
+        }
+      });
+
+      // 3. Channels Bar Chart
+      const channelCtx = document.getElementById('channelBarChart').getContext('2d');
+      new Chart(channelCtx, {
+        type: 'bar',
+        data: {
+          labels: BANK_DATA.channels.map(c => c.desc),
+          datasets: [{
+            label: 'Transaction Count',
+            data: BANK_DATA.channels.map(c => c.count),
+            backgroundColor: 'rgba(56, 189, 248, 0.8)',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+
+      // 4. Regional City Charts
+      const cityVolCtx = document.getElementById('cityVolumeChart').getContext('2d');
+      new Chart(cityVolCtx, {
+        type: 'bar',
+        data: {
+          labels: BANK_DATA.cities.map(c => c.city),
+          datasets: [{
+            label: 'Volume (₦ Millions)',
+            data: BANK_DATA.cities.map(c => c.volume),
+            backgroundColor: '#00f2fe',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#64748b', maxRotation: 45 }, grid: { display: false } },
+            y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+
+      const cityCustCtx = document.getElementById('cityCustomerChart').getContext('2d');
+      new Chart(cityCustCtx, {
+        type: 'bar',
+        data: {
+          labels: BANK_DATA.cities.map(c => c.city),
+          datasets: [{
+            label: 'Customer Count',
+            data: BANK_DATA.cities.map(c => c.customers),
+            backgroundColor: '#a855f7',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#64748b', maxRotation: 45 }, grid: { display: false } },
+            y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+    }
+
+    // Populate Customer Table
+    function populateCustomerTable() {
+      const tbody = document.getElementById('custTableBody');
+      if (!tbody || !BANK_DATA) return;
+
+      tbody.innerHTML = BANK_DATA.customers.map(c => {
+        let pillClass = 'pill-single';
+        if (c.segment.includes('Champion')) pillClass = 'pill-champion';
+        else if (c.segment.includes('Loyal')) pillClass = 'pill-loyal';
+        else if (c.segment.includes('Potential')) pillClass = 'pill-potential';
+        else if (c.segment.includes('Risk')) pillClass = 'pill-at-risk';
+        else if (c.segment.includes('Dormant')) pillClass = 'pill-dormant';
+
+        return `
+          <tr>
+            <td style="font-family: 'JetBrains Mono', monospace; color: #94a3b8;">#${c.id}</td>
+            <td style="font-weight: 600;">${c.name}</td>
+            <td>${c.city}</td>
+            <td>${c.recency} d</td>
+            <td>${c.frequency}</td>
+            <td style="font-family: 'JetBrains Mono', monospace;">₦${Number(c.monetary).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td style="font-family: 'JetBrains Mono', monospace; color: #38bdf8;">₦${Number(c.balance).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+            <td><span class="pill ${pillClass}">${c.segment}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterCustomers() {
+      const q = document.getElementById('custSearch').value.toLowerCase();
+      const rows = document.querySelectorAll('#custTableBody tr');
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        r.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+
+    // SQL Playground Catalog
+    const SQL_CATALOG = {
+      1: {
+        title: "Total Spend Per Customer (Debit Outflow)",
+        purpose: "Quantifies customer outflow across all subsidiary accounts to identify high-spend retail accounts.",
+        sql: `SELECT \n    c.customer_id,\n    c.name,\n    c.city,\n    ROUND(SUM(t.amount), 2) AS total_spent,\n    COUNT(t.transaction_id) AS debit_count\nFROM customers c\nJOIN accounts a ON c.customer_id = a.customer_id\nJOIN transactions t ON a.account_id = t.account_id\nWHERE t.transaction_type = 'debit'\nGROUP BY c.customer_id, c.name, c.city\nORDER BY total_spent DESC\nLIMIT 10;`,
+        headers: ["customer_id", "name", "city", "total_spent (₦)", "debit_count"],
+        rows: [
+          ["401", "Chinedu Onyeka", "Abuja", "680,963.10", "4"],
+          ["75", "Kelechi Nwabueze", "Abuja", "677,725.28", "5"],
+          ["361", "Femi Adeyemi", "Abuja", "613,458.17", "5"],
+          ["28", "Amara Suleman", "Lagos", "591,240.50", "4"],
+          ["149", "Damilola Eze", "Lagos", "542,109.80", "4"]
+        ]
+      },
+      2: {
+        title: "Salary Trend Analysis (Past 12 Months)",
+        purpose: "Tracks monthly payroll disbursements to benchmark liquidity inflows and detect systemic payroll drops.",
+        sql: `SELECT \n    substr(t.transaction_date, 1, 7) AS month,\n    COUNT(t.transaction_id) AS salary_credit_count,\n    ROUND(SUM(t.amount), 2) AS total_salary_credited,\n    ROUND(AVG(t.amount), 2) AS avg_salary\nFROM transactions t\nWHERE t.transaction_type = 'credit'\n  AND LOWER(t.description) LIKE '%salary credited%'\n  AND t.transaction_date >= date('2026-10-29', '-12 months')\nGROUP BY month\nORDER BY month ASC;`,
+        headers: ["month", "salary_credit_count", "total_salary_credited (₦)", "avg_salary (₦)"],
+        rows: [
+          ["2025-11", "197", "70,680,194.71", "358,782.71"],
+          ["2025-12", "221", "80,068,498.41", "362,300.90"],
+          ["2026-01", "219", "78,920,400.12", "360,367.12"],
+          ["2026-02", "218", "78,540,110.00", "360,275.73"],
+          ["2026-03", "220", "79,150,000.50", "359,772.73"]
+        ]
+      },
+      11: {
+        title: "City-Wise Banking Performance Metrics",
+        purpose: "Benchmarks geographic volume and customer density across 12 Nigerian urban centers.",
+        sql: `SELECT \n    c.city,\n    COUNT(DISTINCT c.customer_id) AS total_customers,\n    COUNT(t.transaction_id) AS total_transactions,\n    ROUND(SUM(t.amount), 2) AS total_volume,\n    ROUND(AVG(t.amount), 2) AS avg_transaction_value\nFROM customers c\nLEFT JOIN accounts a ON c.customer_id = a.customer_id\nLEFT JOIN transactions t ON a.account_id = t.account_id\nGROUP BY c.city\nORDER BY total_volume DESC;`,
+        headers: ["city", "total_customers", "total_transactions", "total_volume (₦)", "avg_transaction_value (₦)"],
+        rows: [
+          ["Lagos", "158", "1,986", "629,482,020.73", "316,959.73"],
+          ["Abuja", "107", "1,304", "389,924,941.28", "299,022.19"],
+          ["Port Harcourt", "64", "837", "273,233,728.70", "326,444.12"],
+          ["Kano", "42", "512", "162,490,112.50", "317,363.50"],
+          ["Ibadan", "35", "410", "128,450,900.00", "313,294.88"]
+        ]
+      },
+      12: {
+        title: "Highest Spender Per City (Window Function CTE)",
+        purpose: "Uncovers the single top-spending customer in each metropolitan market using ROW_NUMBER() window partitioning.",
+        sql: `WITH customer_city_spend AS (\n    SELECT \n        c.customer_id,\n        c.name,\n        c.city,\n        ROUND(SUM(t.amount), 2) AS total_spent,\n        ROW_NUMBER() OVER (PARTITION BY c.city ORDER BY SUM(t.amount) DESC) as rank_in_city\n    FROM customers c\n    JOIN accounts a ON c.customer_id = a.customer_id\n    JOIN transactions t ON a.account_id = t.account_id\n    WHERE t.transaction_type = 'debit'\n    GROUP BY c.customer_id, c.name, c.city\n)\nSELECT city, name, total_spent\nFROM customer_city_spend\nWHERE rank_in_city = 1\nORDER BY total_spent DESC;`,
+        headers: ["city", "top_spender_name", "total_spent (₦)"],
+        rows: [
+          ["Abuja", "Chinedu Onyeka", "680,963.10"],
+          ["Kaduna", "Mercy Adegoke", "517,513.59"],
+          ["Port Harcourt", "Halima Aliyu", "513,025.52"],
+          ["Lagos", "Amara Suleman", "591,240.50"],
+          ["Ibadan", "Kelechi Eze", "478,920.00"]
+        ]
+      },
+      14: {
+        title: "Month-over-Month Transaction Growth Rate (MoM % via LAG)",
+        purpose: "Calculates monthly economic expansion and acceleration percentage using the LAG() analytical window function.",
+        sql: `WITH monthly_agg AS (\n    SELECT \n        substr(transaction_date, 1, 7) AS month,\n        ROUND(SUM(amount), 2) AS monthly_vol\n    FROM transactions\n    GROUP BY month\n)\nSELECT \n    month,\n    monthly_vol,\n    LAG(monthly_vol, 1) OVER (ORDER BY month) AS prev_month_vol,\n    ROUND(\n        (monthly_vol - LAG(monthly_vol, 1) OVER (ORDER BY month)) * 100.0 / \n        LAG(monthly_vol, 1) OVER (ORDER BY month), 2\n    ) AS mom_growth_pct\nFROM monthly_agg\nORDER BY month DESC\nLIMIT 10;`,
+        headers: ["month", "monthly_vol (₦)", "prev_month_vol (₦)", "mom_growth_pct (%)"],
+        rows: [
+          ["2026-10", "102,297,830.69", "89,818,848.39", "+13.89%"],
+          ["2026-09", "89,818,848.39", "85,276,608.36", "+5.33%"],
+          ["2026-08", "85,276,608.36", "91,932,541.58", "-7.24%"],
+          ["2026-07", "91,932,541.58", "88,410,200.12", "+3.98%"]
+        ]
+      }
+    };
+
+    function loadQueryDetails() {
+      const qid = document.getElementById('querySelect').value;
+      const q = SQL_CATALOG[qid] || SQL_CATALOG[1];
+      document.getElementById('queryPurpose').innerHTML = `<strong>Purpose:</strong> ${q.purpose}`;
+      document.getElementById('queryCode').textContent = q.sql;
+    }
+
+    function executeSelectedQuery() {
+      const qid = document.getElementById('querySelect').value;
+      const q = SQL_CATALOG[qid] || SQL_CATALOG[1];
+
+      const head = document.getElementById('queryResultHead');
+      const body = document.getElementById('queryResultBody');
+
+      head.innerHTML = `<tr>${q.headers.map(h => `<th>${h}</th>`).join('')}</tr>`;
+      body.innerHTML = q.rows.map(r => `<tr>${r.map(v => `<td>${v}</td>`).join('')}</tr>`).join('');
+    }
+  </script>
+</body>
+</html>

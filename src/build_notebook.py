@@ -1,0 +1,188 @@
+import json
+import os
+
+notebook_path = "/Users/makshaysharma/Downloads/Bank-Segmentation-Analysis-main/notebooks/Bank_Segmentation_ML_Analysis.ipynb"
+os.makedirs(os.path.dirname(notebook_path), exist_ok=True)
+
+cells = [
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "# 🏦 Bank Customer Segmentation & Transaction Intelligence\n",
+            "### End-to-End Behavioral Analytics, RFM Clustering & Machine Learning Pipeline\n",
+            "**Author:** M Akshay Sharma ([@akshaysharma2005](https://github.com/akshaysharma2005))\n",
+            "\n",
+            "---\n",
+            "## 📌 Project Overview\n",
+            "This notebook presents an enterprise-grade financial analytics suite modeling multi-tier banking behavioral patterns.\n",
+            "Using SQL window functions, RFM (Recency, Frequency, Monetary) quintile scoring, and unsupervised K-Means clustering,\n",
+            "we uncover actionable insights regarding customer lifetime value, dormancy risks, and regional capital concentration."
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": None,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "import os\n",
+            "import sqlite3\n",
+            "import datetime\n",
+            "import numpy as np\n",
+            "import pandas as pd\n",
+            "import matplotlib.pyplot as plt\n",
+            "import seaborn as sns\n",
+            "from sklearn.preprocessing import StandardScaler\n",
+            "from sklearn.cluster import KMeans\n",
+            "from sklearn.decomposition import PCA\n",
+            "\n",
+            "# Visual Settings\n",
+            "plt.style.use('dark_background')\n",
+            "plt.rcParams['font.sans-serif'] = 'Helvetica, Arial, sans-serif'\n",
+            "plt.rcParams['figure.dpi'] = 120\n",
+            "\n",
+            "DB_PATH = '../data/bank_analytics.db'\n",
+            "conn = sqlite3.connect(DB_PATH)\n",
+            "print('Connected to database successfully!')"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "## 1. Exploratory Data Analysis & Summary Statistics"
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": None,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "# Query high-level portfolio KPIs\n",
+            "kpi_df = pd.read_sql_query('''\n",
+            "SELECT \n",
+            "    (SELECT COUNT(*) FROM customers) AS total_customers,\n",
+            "    (SELECT COUNT(*) FROM accounts) AS total_accounts,\n",
+            "    (SELECT COUNT(*) FROM transactions) AS total_transactions,\n",
+            "    (SELECT ROUND(SUM(amount) / 1e6, 2) FROM transactions) AS total_volume_millions,\n",
+            "    (SELECT ROUND(SUM(balance) / 1e6, 2) FROM accounts) AS total_deposits_millions\n",
+            "''', conn)\n",
+            "kpi_df"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "## 2. City-Wise Financial Volume & Customer Activity"
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": None,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "city_df = pd.read_sql_query('''\n",
+            "SELECT \n",
+            "    c.city,\n",
+            "    COUNT(DISTINCT c.customer_id) AS total_customers,\n",
+            "    COUNT(t.transaction_id) AS total_transactions,\n",
+            "    ROUND(SUM(t.amount) / 1e6, 2) AS volume_millions,\n",
+            "    ROUND(AVG(t.amount), 2) AS avg_txn_value\n",
+            "FROM customers c\n",
+            "LEFT JOIN accounts a ON c.customer_id = a.customer_id\n",
+            "LEFT JOIN transactions t ON a.account_id = t.account_id\n",
+            "GROUP BY c.city\n",
+            "ORDER BY volume_millions DESC\n",
+            "''', conn)\n",
+            "\n",
+            "plt.figure(figsize=(10, 4.5))\n",
+            "sns.barplot(data=city_df, x='city', y='volume_millions', palette='mako')\n",
+            "plt.title('Regional Banking Volume Across Major Cities (₦ Millions)', fontsize=13, fontweight='bold')\n",
+            "plt.xticks(rotation=45, ha='right')\n",
+            "plt.ylabel('Gross Volume (₦ Millions)')\n",
+            "plt.tight_layout()\n",
+            "plt.show()"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "## 3. RFM (Recency, Frequency, Monetary) Customer Segmentation"
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": None,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "rfm_df = pd.read_sql_query('SELECT * FROM customer_rfm_segments', conn)\n",
+            "print(f'Loaded {len(rfm_df)} customer profiles.')\n",
+            "rfm_df[['name', 'city', 'recency', 'frequency', 'monetary', 'segment']].head(10)"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "## 4. Unsupervised K-Means Clustering on Behavioral Vectors"
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": None,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "# Scatter plot of PCA components\n",
+            "plt.figure(figsize=(10, 6))\n",
+            "sns.scatterplot(\n",
+            "    data=rfm_df, x='pca_x', y='pca_y', hue='cluster', palette='turbo', s=70, alpha=0.8\n",
+            ")\n",
+            "plt.title('K-Means Algorithmic Clusters in 2D PCA Space', fontsize=14, fontweight='bold')\n",
+            "plt.xlabel('Principal Component 1 (Velocity & Inflow)')\n",
+            "plt.ylabel('Principal Component 2 (Inactivity & Recency)')\n",
+            "plt.legend(title='Cluster ID', frameon=True, facecolor='#111c33')\n",
+            "plt.tight_layout()\n",
+            "plt.show()"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "## 5. Strategic Recommendations & Business Playbooks\n",
+            "1. **Champions (Top 18-25%):** Assign dedicated relationship managers and offer premium wealth advisory products.\n",
+            "2. **Loyal Customers:** Incentivize high-margin financial products such as fixed deposits and foreign exchange lines.\n",
+            "3. **Single Product Users:** Cross-sell secondary accounts (Savings + Current or Personal Loans).\n",
+            "4. **Dormant Accounts (>12M Inactivity):** Launch automated SMS/Email KYC refresh campaigns with zero maintenance fee incentives."
+        ]
+    }
+]
+
+notebook_content = {
+    "cells": cells,
+    "metadata": {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3"
+        },
+        "language_info": {
+            "name": "python",
+            "version": "3.14.6"
+        }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 4
+}
+
+with open(notebook_path, "w") as f:
+    json.dump(notebook_content, f, indent=2)
+
+print("Notebook generated successfully at", notebook_path)

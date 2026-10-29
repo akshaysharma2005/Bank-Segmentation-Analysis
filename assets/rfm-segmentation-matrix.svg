@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="rfmBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d"/>
+      <stop offset="100%" stop-color="#060913"/>
+    </linearGradient>
+
+    <!-- Card Background -->
+    <linearGradient id="rfmCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#131d33" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0e1626" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <style>
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 800; fill: #ffffff; }
+      .body-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 700; font-size: 16px; }
+      .metric-label { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+      .desc-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11.5px; fill: #94a3b8; line-height: 1.45; }
+      .action-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; font-weight: 600; line-height: 1.4; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="520" rx="16" fill="url(#rfmBg)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <g transform="translate(40, 36)">
+    <text x="0" y="0" class="title" font-size="20">RFM Customer Segmentation Matrix &amp; Strategic Playbooks</text>
+    <text x="0" y="24" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#64748b">
+      Data-driven behavioral clustering based on Recency (R), Frequency (F), and Monetary (M) scores
+    </text>
+  </g>
+
+  <!-- 6 Grid Cards: 3 columns x 2 rows -->
+
+  <!-- CARD 1: Champions (Top Left) -->
+  <g transform="translate(40, 85)">
+    <rect width="320" height="195" rx="12" fill="url(#rfmCard)" stroke="#00f2fe" stroke-width="1.2" stroke-opacity="0.6"/>
+    <rect width="320" height="3" fill="#00f2fe" rx="1.5"/>
+
+    <g transform="translate(18, 22)">
+      <circle cx="10" cy="10" r="10" fill="#00f2fe" fill-opacity="0.2"/>
+      <text x="10" y="14" text-anchor="middle" font-size="11" fill="#00f2fe">👑</text>
+      <text x="28" y="15" class="body-title" fill="#38bdf8">Champions</text>
+
+      <rect x="200" y="2" width="84" height="18" rx="9" fill="#0369a1" fill-opacity="0.4"/>
+      <text x="242" y="14" text-anchor="middle" class="metric-label" fill="#7dd3fc">R: 5 | F: 5 | M: 5</text>
+
+      <text x="0" y="44" class="desc-text">
+        Highest spending clients with high transaction frequency and recent activity within 30 days. Prime drivers of branch profitability.
+      </text>
+
+      <!-- Strategy Box -->
+      <g transform="translate(0, 84)">
+        <rect width="284" height="48" rx="6" fill="#082f49" stroke="#0369a1" stroke-width="1"/>
+        <text x="10" y="18" class="metric-label" fill="#38bdf8">STRATEGIC PLAYBOOK:</text>
+        <text x="10" y="36" class="action-text" fill="#bae6fd">Dedicated private banker, VIP wealth products &amp; reward tier exemptions.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- CARD 2: Loyal Customers (Top Middle) -->
+  <g transform="translate(390, 85)">
+    <rect width="320" height="195" rx="12" fill="url(#rfmCard)" stroke="#10b981" stroke-width="1.2" stroke-opacity="0.6"/>
+    <rect width="320" height="3" fill="#10b981" rx="1.5"/>
+
+    <g transform="translate(18, 22)">
+      <circle cx="10" cy="10" r="10" fill="#10b981" fill-opacity="0.2"/>
+      <text x="10" y="14" text-anchor="middle" font-size="11" fill="#10b981">💎</text>
+      <text x="28" y="15" class="body-title" fill="#34d399">Loyal Customers</text>
+
+      <rect x="200" y="2" width="84" height="18" rx="9" fill="#065f46" fill-opacity="0.4"/>
+      <text x="242" y="14" text-anchor="middle" class="metric-label" fill="#6ee7b7">R: 4-5 | F: 4 | M: 4</text>
+
+      <text x="0" y="44" class="desc-text">
+        Consistent account usage across debit &amp; credit channels. Highly responsive to digital banking features and salary accounts.
+      </text>
+
+      <g transform="translate(0, 84)">
+        <rect width="284" height="48" rx="6" fill="#064e3b" stroke="#047857" stroke-width="1"/>
+        <text x="10" y="18" class="metric-label" fill="#34d399">STRATEGIC PLAYBOOK:</text>
+        <text x="10" y="36" class="action-text" fill="#a7f3d0">Cross-sell fixed deposits, premium credit cards, and cash-back loyalty points.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- CARD 3: Potential Loyalists (Top Right) -->
+  <g transform="translate(740, 85)">
+    <rect width="320" height="195" rx="12" fill="url(#rfmCard)" stroke="#8b5cf6" stroke-width="1.2" stroke-opacity="0.6"/>
+    <rect width="320" height="3" fill="#8b5cf6" rx="1.5"/>
+
+    <g transform="translate(18, 22)">
+      <circle cx="10" cy="10" r="10" fill="#8b5cf6" fill-opacity="0.2"/>
+      <text x="10" y="14" text-anchor="middle" font-size="11" fill="#8b5cf6">🚀</text>
+      <text x="28" y="15" class="body-title" fill="#c084fc">Potential Loyalists</text>
+
+      <rect x="200" y="2" width="84" height="18" rx="9" fill="#581c87" fill-opacity="0.4"/>
+      <text x="242" y="14" text-anchor="middle" class="metric-label" fill="#d8b4fe">R: 4-5 | F: 2-3 | M: 3</text>
+
+      <text x="0" y="44" class="desc-text">
+        Recent signups or customers with moderate activity who show growth signals. Good deposit inflow with untapped credit potential.
+      </text>
+
+      <g transform="translate(0, 84)">
+        <rect width="284" height="48" rx="6" fill="#3b0764" stroke="#6b21a8" stroke-width="1"/>
+        <text x="10" y="18" class="metric-label" fill="#c084fc">STRATEGIC PLAYBOOK:</text>
+        <text x="10" y="36" class="action-text" fill="#e9d5ff">Offer secondary account bonuses (e.g. Current + Loan), mobile app onboarding.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- CARD 4: Promising / New (Bottom Left) -->
+  <g transform="translate(40, 300)">
+    <rect width="320" height="195" rx="12" fill="url(#rfmCard)" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.4"/>
+    <rect width="320" height="3" fill="#38bdf8" rx="1.5"/>
+
+    <g transform="translate(18, 22)">
+      <circle cx="10" cy="10" r="10" fill="#38bdf8" fill-opacity="0.2"/>
+      <text x="10" y="14" text-anchor="middle" font-size="11" fill="#38bdf8">🌱</text>
+      <text x="28" y="15" class="body-title" fill="#93c5fd">New &amp; Single Product</text>
+
+      <rect x="200" y="2" width="84" height="18" rx="9" fill="#1e3a8a" fill-opacity="0.4"/>
+      <text x="242" y="14" text-anchor="middle" class="metric-label" fill="#bfdbfe">R: 3-4 | F: 1-2 | M: 2</text>
+
+      <text x="0" y="44" class="desc-text">
+        Customers holding only a single savings or current account. Baseline activity observed with low engagement across other channels.
+      </text>
+
+      <g transform="translate(0, 84)">
+        <rect width="284" height="48" rx="6" fill="#172554" stroke="#1d4ed8" stroke-width="1"/>
+        <text x="10" y="18" class="metric-label" fill="#60a5fa">STRATEGIC PLAYBOOK:</text>
+        <text x="10" y="36" class="action-text" fill="#bfdbfe">Digital utility bill payment rewards, micro-investment upsell, recurring deposits.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- CARD 5: At Risk / Churn Alert (Bottom Middle) -->
+  <g transform="translate(390, 300)">
+    <rect width="320" height="195" rx="12" fill="url(#rfmCard)" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.6"/>
+    <rect width="320" height="3" fill="#f59e0b" rx="1.5"/>
+
+    <g transform="translate(18, 22)">
+      <circle cx="10" cy="10" r="10" fill="#f59e0b" fill-opacity="0.2"/>
+      <text x="10" y="14" text-anchor="middle" font-size="11" fill="#f59e0b">⚠️</text>
+      <text x="28" y="15" class="body-title" fill="#fbbf24">At Risk / Need Attention</text>
+
+      <rect x="200" y="2" width="84" height="18" rx="9" fill="#78350f" fill-opacity="0.4"/>
+      <text x="242" y="14" text-anchor="middle" class="metric-label" fill="#fcd34d">R: 2-3 | F: 3-4 | M: 4</text>
+
+      <text x="0" y="44" class="desc-text">
+        Past high-volume accounts with noticeably declining transaction frequency over the last 90–180 days. High probability of switching banks.
+      </text>
+
+      <g transform="translate(0, 84)">
+        <rect width="284" height="48" rx="6" fill="#451a03" stroke="#b45309" stroke-width="1"/>
+        <text x="10" y="18" class="metric-label" fill="#fbbf24">STRATEGIC PLAYBOOK:</text>
+        <text x="10" y="36" class="action-text" fill="#fde68a">Proactive account manager check-in, zero fee promo, personalized credit lines.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- CARD 6: Dormant / Lost (Bottom Right) -->
+  <g transform="translate(740, 300)">
+    <rect width="320" height="195" rx="12" fill="url(#rfmCard)" stroke="#f43f5e" stroke-width="1.2" stroke-opacity="0.6"/>
+    <rect width="320" height="3" fill="#f43f5e" rx="1.5"/>
+
+    <g transform="translate(18, 22)">
+      <circle cx="10" cy="10" r="10" fill="#f43f5e" fill-opacity="0.2"/>
+      <text x="10" y="14" text-anchor="middle" font-size="11" fill="#f43f5e">💤</text>
+      <text x="28" y="15" class="body-title" fill="#fb7185">Dormant Accounts (12M+)</text>
+
+      <rect x="200" y="2" width="84" height="18" rx="9" fill="#881337" fill-opacity="0.4"/>
+      <text x="242" y="14" text-anchor="middle" class="metric-label" fill="#fda4af">R: 1 | F: 1 | M: 1</text>
+
+      <text x="0" y="44" class="desc-text">
+        Zero transactions in the last 12 months. Represents dormant balance liabilities and regulatory compliance overhead.
+      </text>
+
+      <g transform="translate(0, 84)">
+        <rect width="284" height="48" rx="6" fill="#4c0519" stroke="#be123c" stroke-width="1"/>
+        <text x="10" y="18" class="metric-label" fill="#fb7185">STRATEGIC PLAYBOOK:</text>
+        <text x="10" y="36" class="action-text" fill="#fecdd3">Automated SMS/Email reactivation incentive, KYC refresh, account consolidation.</text>
+      </g>
+    </g>
+  </g>
+</svg>

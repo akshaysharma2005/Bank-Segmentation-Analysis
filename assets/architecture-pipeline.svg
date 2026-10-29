@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pipeBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#070c18"/>
+    </linearGradient>
+    <linearGradient id="cardGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#192642" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0e1729" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Flow line gradients -->
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+
+    <filter id="glowLight" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <style>
+      .hdr { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 700; fill: #f8fafc; font-size: 15px; }
+      .desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #94a3b8; line-height: 1.4; }
+      .step-num { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; font-weight: 800; }
+      .pill { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 9.5px; font-weight: 600; }
+      @keyframes dash {
+        to { stroke-dashoffset: -32; }
+      }
+      .flow-arrow { stroke-dasharray: 6 4; animation: dash 1.5s linear infinite; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="400" rx="16" fill="url(#pipeBg)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Top Title Bar -->
+  <g transform="translate(40, 36)">
+    <rect x="0" y="0" width="34" height="20" rx="4" fill="#0284c7" fill-opacity="0.2" stroke="#0284c7"/>
+    <text x="17" y="14" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10" font-weight="800" fill="#38bdf8">E2E</text>
+    <text x="46" y="15" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="18" font-weight="800" fill="#ffffff">
+      Enterprise Architecture &amp; Data Intelligence Pipeline
+    </text>
+    <text x="46" y="34" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#64748b">
+      From simulated relational transactions to machine learning clustering &amp; interactive executive BI
+    </text>
+  </g>
+
+  <!-- 4 Architecture Stage Cards -->
+
+  <!-- STAGE 1: Ingestion & Relational Schema -->
+  <g transform="translate(40, 95)">
+    <rect width="225" height="260" rx="14" fill="url(#cardGrad2)" stroke="#1e293b" stroke-width="1.5"/>
+    <rect x="0" y="0" width="225" height="4" rx="2" fill="url(#cyanGrad)"/>
+
+    <!-- Stage Tag -->
+    <rect x="18" y="18" width="68" height="20" rx="6" fill="#082f49"/>
+    <text x="52" y="32" text-anchor="middle" class="step-num" fill="#38bdf8">PHASE 01</text>
+
+    <!-- Icon: Database -->
+    <g transform="translate(180, 20)">
+      <circle cx="12" cy="12" r="14" fill="#0f2b48"/>
+      <path d="M6 8 C6 6 18 6 18 8 C18 10 6 10 6 8 Z M6 11 C6 13 18 13 18 11 M6 15 C6 17 18 17 18 15" stroke="#38bdf8" stroke-width="1.6" fill="none"/>
+    </g>
+
+    <text x="18" y="66" class="hdr">Relational Ingestion</text>
+    <text x="18" y="84" class="desc">Synthetic banking data engine</text>
+    <text x="18" y="99" class="desc">with realistic distributions:</text>
+
+    <g transform="translate(18, 115)">
+      <rect x="0" y="0" width="188" height="24" rx="4" fill="#0b1728"/>
+      <text x="8" y="16" class="pill" fill="#93c5fd">• customers (200-1000)</text>
+
+      <rect x="0" y="30" width="188" height="24" rx="4" fill="#0b1728"/>
+      <text x="8" y="46" class="pill" fill="#93c5fd">• accounts (multi-product)</text>
+
+      <rect x="0" y="60" width="188" height="24" rx="4" fill="#0b1728"/>
+      <text x="8" y="76" class="pill" fill="#93c5fd">• transactions (debit/credit)</text>
+
+      <rect x="0" y="90" width="188" height="24" rx="4" fill="#0b1728"/>
+      <text x="8" y="106" class="pill" fill="#38bdf8">• SQLite + PostgreSQL</text>
+    </g>
+  </g>
+
+  <!-- Flow Connector 1 -> 2 -->
+  <line x1="267" y1="225" x2="310" y2="225" stroke="#38bdf8" stroke-width="2" class="flow-arrow"/>
+  <polygon points="310,221 318,225 310,229" fill="#38bdf8"/>
+
+  <!-- STAGE 2: Advanced SQL & CTEs -->
+  <g transform="translate(320, 95)">
+    <rect width="225" height="260" rx="14" fill="url(#cardGrad2)" stroke="#1e293b" stroke-width="1.5"/>
+    <rect x="0" y="0" width="225" height="4" rx="2" fill="url(#purpleGrad)"/>
+
+    <rect x="18" y="18" width="68" height="20" rx="6" fill="#2e1065"/>
+    <text x="52" y="32" text-anchor="middle" class="step-num" fill="#c084fc">PHASE 02</text>
+
+    <!-- Icon: SQL Engine -->
+    <g transform="translate(180, 20)">
+      <circle cx="12" cy="12" r="14" fill="#2e1065"/>
+      <path d="M7 8 L11 12 L7 16 M13 16 L17 16" stroke="#c084fc" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <text x="18" y="66" class="hdr">SQL Analytics Suite</text>
+    <text x="18" y="84" class="desc">14+ optimized analytical</text>
+    <text x="18" y="99" class="desc">queries &amp; business metrics:</text>
+
+    <g transform="translate(18, 115)">
+      <rect x="0" y="0" width="188" height="24" rx="4" fill="#13152e"/>
+      <text x="8" y="16" class="pill" fill="#e9d5ff">• Window Funcs &amp; Running Bal</text>
+
+      <rect x="0" y="30" width="188" height="24" rx="4" fill="#13152e"/>
+      <text x="8" y="46" class="pill" fill="#e9d5ff">• Salary Trend Anomaly Detection</text>
+
+      <rect x="0" y="60" width="188" height="24" rx="4" fill="#13152e"/>
+      <text x="8" y="76" class="pill" fill="#e9d5ff">• 12M Inactivity Dormancy Filter</text>
+
+      <rect x="0" y="90" width="188" height="24" rx="4" fill="#13152e"/>
+      <text x="8" y="106" class="pill" fill="#c084fc">• Regional Top-Spender CTEs</text>
+    </g>
+  </g>
+
+  <!-- Flow Connector 2 -> 3 -->
+  <line x1="547" y1="225" x2="590" y2="225" stroke="#a855f7" stroke-width="2" class="flow-arrow"/>
+  <polygon points="590,221 598,225 590,229" fill="#a855f7"/>
+
+  <!-- STAGE 3: Machine Learning & RFM Scoring -->
+  <g transform="translate(600, 95)">
+    <rect width="225" height="260" rx="14" fill="url(#cardGrad2)" stroke="#1e293b" stroke-width="1.5"/>
+    <rect x="0" y="0" width="225" height="4" rx="2" fill="url(#emeraldGrad)"/>
+
+    <rect x="18" y="18" width="68" height="20" rx="6" fill="#064e3b"/>
+    <text x="52" y="32" text-anchor="middle" class="step-num" fill="#34d399">PHASE 03</text>
+
+    <!-- Icon: ML Cluster -->
+    <g transform="translate(180, 20)">
+      <circle cx="12" cy="12" r="14" fill="#064e3b"/>
+      <circle cx="9" cy="9" r="2.5" fill="#34d399"/>
+      <circle cx="16" cy="11" r="2" fill="#34d399"/>
+      <circle cx="11" cy="17" r="2.5" fill="#34d399"/>
+      <line x1="9" y1="9" x2="16" y2="11" stroke="#34d399" stroke-width="1"/>
+      <line x1="9" y1="9" x2="11" y2="17" stroke="#34d399" stroke-width="1"/>
+    </g>
+
+    <text x="18" y="66" class="hdr">ML &amp; RFM Clustering</text>
+    <text x="18" y="84" class="desc">Algorithmic segmentation</text>
+    <text x="18" y="99" class="desc">and behavior modeling:</text>
+
+    <g transform="translate(18, 115)">
+      <rect x="0" y="0" width="188" height="24" rx="4" fill="#091f1c"/>
+      <text x="8" y="16" class="pill" fill="#a7f3d0">• RFM Scoring (R, F, M 1-5)</text>
+
+      <rect x="0" y="30" width="188" height="24" rx="4" fill="#091f1c"/>
+      <text x="8" y="46" class="pill" fill="#a7f3d0">• K-Means Unsupervised Model</text>
+
+      <rect x="0" y="60" width="188" height="24" rx="4" fill="#091f1c"/>
+      <text x="8" y="76" class="pill" fill="#a7f3d0">• Elbow &amp; Silhouette Metric</text>
+
+      <rect x="0" y="90" width="188" height="24" rx="4" fill="#091f1c"/>
+      <text x="8" y="106" class="pill" fill="#34d399">• PCA 2D Cluster Space</text>
+    </g>
+  </g>
+
+  <!-- Flow Connector 3 -> 4 -->
+  <line x1="827" y1="225" x2="870" y2="225" stroke="#10b981" stroke-width="2" class="flow-arrow"/>
+  <polygon points="870,221 878,225 870,229" fill="#10b981"/>
+
+  <!-- STAGE 4: Interactive Dashboard & Insights -->
+  <g transform="translate(880, 95)">
+    <rect width="180" height="260" rx="14" fill="url(#cardGrad2)" stroke="#1e293b" stroke-width="1.5"/>
+    <rect x="0" y="0" width="180" height="4" rx="2" fill="url(#amberGrad)"/>
+
+    <rect x="18" y="18" width="68" height="20" rx="6" fill="#451a03"/>
+    <text x="52" y="32" text-anchor="middle" class="step-num" fill="#fbbf24">PHASE 04</text>
+
+    <!-- Icon: Chart -->
+    <g transform="translate(136, 20)">
+      <circle cx="12" cy="12" r="14" fill="#451a03"/>
+      <path d="M7 16 L10 11 L13 14 L17 8" stroke="#fbbf24" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <text x="18" y="66" class="hdr">Executive BI</text>
+    <text x="18" y="84" class="desc">Interactive web app,</text>
+    <text x="18" y="99" class="desc">charts &amp; playbooks:</text>
+
+    <g transform="translate(18, 115)">
+      <rect x="0" y="0" width="144" height="24" rx="4" fill="#1f180e"/>
+      <text x="8" y="16" class="pill" fill="#fde68a">• Web Dashboard</text>
+
+      <rect x="0" y="30" width="144" height="24" rx="4" fill="#1f180e"/>
+      <text x="8" y="46" class="pill" fill="#fde68a">• Live SQL Runner</text>
+
+      <rect x="0" y="60" width="144" height="24" rx="4" fill="#1f180e"/>
+      <text x="8" y="76" class="pill" fill="#fde68a">• Geo Heatmap</text>
+
+      <rect x="0" y="90" width="144" height="24" rx="4" fill="#1f180e"/>
+      <text x="8" y="106" class="pill" fill="#fbbf24">• Churn Prevention</text>
+    </g>
+  </g>
+</svg>
