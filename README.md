@@ -14,7 +14,7 @@
 **An enterprise-grade financial analytics suite modeling multi-tier banking behavioral patterns.**  
 *Combines advanced SQL window functions, RFM quintile scoring, unsupervised K-Means clustering, and an interactive executive web dashboard.*
 
-[🚀 Live Interactive Dashboard](index.html) • [📊 Architecture Pipeline](#-enterprise-architecture--data-pipeline) • [👑 RFM Matrix](#-rfm-behavioral-segmentation-matrix) • [⚡ SQL Query Catalog](#-advanced-sql-analytics-suite) • [📓 Jupyter Notebook](notebooks/Bank_Segmentation_ML_Analysis.ipynb)
+[🚀 Live Interactive Web App](https://akshaysharma2005.github.io/Bank-Segmentation-Analysis/) • [📊 Architecture Pipeline](#-enterprise-architecture--data-pipeline) • [👑 RFM Matrix](#-rfm-behavioral-segmentation-matrix) • [⚡ SQL Query Catalog](#-advanced-sql-analytics-suite) • [📓 Jupyter Notebook](notebooks/Bank_Segmentation_ML_Analysis.ipynb)
 
 ---
 
