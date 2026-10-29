@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bank Customer Segmentation & Transaction Intelligence Suite</title>
+  <title>Bank Customer Segmentation &amp; Transaction Intelligence Suite</title>
   
   <!-- Modern Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- SQL.js WebAssembly SQLite Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/sql-wasm.js"></script>
 
   <!-- External Data Bundle -->
   <script src="dashboard_data.js"></script>
@@ -198,7 +201,7 @@
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-muted);
-      padding: 10px 20px;
+      padding: 10px 18px;
       font-size: 13.5px;
       font-weight: 600;
       border-radius: 8px;
@@ -252,6 +255,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .panel-title {
@@ -342,6 +347,7 @@
       overflow-x: auto;
       border-radius: 8px;
       border: 1px solid var(--border-card);
+      max-height: 480px;
     }
 
     table {
@@ -358,10 +364,13 @@
       font-weight: 600;
       border-bottom: 1px solid var(--border-card);
       white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
 
     td {
-      padding: 12px 16px;
+      padding: 11px 16px;
       border-bottom: 1px solid rgba(30, 48, 80, 0.4);
       color: #f1f5f9;
       white-space: nowrap;
@@ -446,6 +455,202 @@
       transform: translateY(-1px);
     }
 
+    .btn-secondary {
+      background: #13223f;
+      border: 1px solid #233860;
+      color: #cbd5e1;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #1c3159;
+      color: #ffffff;
+      border-color: #3b82f6;
+    }
+
+    /* ==========================================================================
+       SQL STUDIO (WRITE ANY QUERY) STYLES
+       ========================================================================== */
+    .studio-layout {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .studio-layout { grid-template-columns: 1fr; }
+    }
+
+    .schema-panel {
+      background: #0b1426;
+      border: 1px solid #1b2c4e;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .schema-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .schema-table-box {
+      margin-bottom: 14px;
+      border: 1px solid #162442;
+      border-radius: 8px;
+      background: #080f1d;
+      overflow: hidden;
+    }
+
+    .schema-table-hdr {
+      background: #101c36;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .schema-cols {
+      padding: 8px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .col-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: #121e36;
+      color: #94a3b8;
+      padding: 3px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .col-pill:hover {
+      color: var(--cyan-neon);
+      border-color: rgba(0, 242, 254, 0.4);
+      background: #17284a;
+    }
+
+    .template-item {
+      background: #080f1d;
+      border: 1px solid #162442;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .template-item:hover {
+      background: #101e38;
+      border-color: var(--cyan-neon);
+      color: #ffffff;
+    }
+
+    .editor-wrapper {
+      background: #080d1a;
+      border: 1px solid #1e3054;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #162442;
+    }
+
+    .sql-textarea {
+      width: 100%;
+      min-height: 160px;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    .studio-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #0a1324;
+      border: 1px solid #182848;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .engine-indicator {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 600;
+    }
+
+    .engine-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald-neon);
+      box-shadow: 0 0 8px var(--emerald-neon);
+    }
+
+    .sql-error-box {
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid var(--rose-neon);
+      color: #fda4af;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      margin-bottom: 16px;
+      display: none;
+      white-space: pre-wrap;
+    }
+
     /* Footer */
     footer {
       margin-top: 48px;
@@ -519,6 +724,9 @@
       <button class="tab-btn active" onclick="switchTab('overview')">
         📊 Executive Overview &amp; Trends
       </button>
+      <button class="tab-btn" onclick="switchTab('studio')">
+        💻 Custom SQL Studio (Write &amp; Run)
+      </button>
       <button class="tab-btn" onclick="switchTab('rfm')">
         👑 RFM Segmentation Matrix
       </button>
@@ -529,7 +737,7 @@
         🔍 Customer Explorer &amp; Tiers
       </button>
       <button class="tab-btn" onclick="switchTab('sql')">
-        ⚡ Live SQL Query Playground
+        ⚡ Curated SQL Query Catalog
       </button>
     </div>
 
@@ -574,7 +782,195 @@
       </div>
     </div>
 
-    <!-- TAB 2: RFM SEGMENTATION MATRIX -->
+    <!-- TAB 2: CUSTOM SQL STUDIO (NEW FEATURE REQUEST) -->
+    <div id="tab-studio" class="tab-content">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">
+              <span>💻 Interactive SQL Studio &amp; Live Execution Engine</span>
+            </div>
+            <div class="panel-subtitle">
+              Type or paste ANY SQL query (SELECT, JOIN, GROUP BY, CTEs, Window Functions) to run directly against the live database in your browser!
+            </div>
+          </div>
+        </div>
+
+        <div class="studio-layout">
+          <!-- Left Column: Schema Reference & Templates -->
+          <div class="schema-panel">
+            <div class="schema-title">
+              <span>📚 Database Schema</span>
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Click to insert</span>
+            </div>
+
+            <!-- Table: customers -->
+            <div class="schema-table-box">
+              <div class="schema-table-hdr" onclick="insertSnippet('customers')">
+                <span>👤 customers (500)</span>
+                <span style="font-size: 10px; color: #64748b;">+</span>
+              </div>
+              <div class="schema-cols">
+                <span class="col-pill" onclick="insertSnippet('customer_id')">customer_id</span>
+                <span class="col-pill" onclick="insertSnippet('name')">name</span>
+                <span class="col-pill" onclick="insertSnippet('city')">city</span>
+                <span class="col-pill" onclick="insertSnippet('gender')">gender</span>
+                <span class="col-pill" onclick="insertSnippet('dob')">dob</span>
+                <span class="col-pill" onclick="insertSnippet('signup_date')">signup_date</span>
+              </div>
+            </div>
+
+            <!-- Table: accounts -->
+            <div class="schema-table-box">
+              <div class="schema-table-hdr" onclick="insertSnippet('accounts')">
+                <span>💳 accounts (1,050)</span>
+                <span style="font-size: 10px; color: #64748b;">+</span>
+              </div>
+              <div class="schema-cols">
+                <span class="col-pill" onclick="insertSnippet('account_id')">account_id</span>
+                <span class="col-pill" onclick="insertSnippet('customer_id')">customer_id</span>
+                <span class="col-pill" onclick="insertSnippet('account_number')">account_number</span>
+                <span class="col-pill" onclick="insertSnippet('account_type')">account_type</span>
+                <span class="col-pill" onclick="insertSnippet('balance')">balance</span>
+                <span class="col-pill" onclick="insertSnippet('open_date')">open_date</span>
+              </div>
+            </div>
+
+            <!-- Table: transactions -->
+            <div class="schema-table-box">
+              <div class="schema-table-hdr" onclick="insertSnippet('transactions')">
+                <span>💸 transactions (6,000)</span>
+                <span style="font-size: 10px; color: #64748b;">+</span>
+              </div>
+              <div class="schema-cols">
+                <span class="col-pill" onclick="insertSnippet('transaction_id')">transaction_id</span>
+                <span class="col-pill" onclick="insertSnippet('account_id')">account_id</span>
+                <span class="col-pill" onclick="insertSnippet('transaction_date')">transaction_date</span>
+                <span class="col-pill" onclick="insertSnippet('amount')">amount</span>
+                <span class="col-pill" onclick="insertSnippet('transaction_type')">transaction_type</span>
+                <span class="col-pill" onclick="insertSnippet('description')">description</span>
+              </div>
+            </div>
+
+            <!-- Table: customer_rfm_segments -->
+            <div class="schema-table-box">
+              <div class="schema-table-hdr" onclick="insertSnippet('customer_rfm_segments')">
+                <span>👑 customer_rfm_segments</span>
+                <span style="font-size: 10px; color: #64748b;">+</span>
+              </div>
+              <div class="schema-cols">
+                <span class="col-pill" onclick="insertSnippet('segment')">segment</span>
+                <span class="col-pill" onclick="insertSnippet('recency')">recency</span>
+                <span class="col-pill" onclick="insertSnippet('frequency')">frequency</span>
+                <span class="col-pill" onclick="insertSnippet('monetary')">monetary</span>
+                <span class="col-pill" onclick="insertSnippet('total_balance')">total_balance</span>
+                <span class="col-pill" onclick="insertSnippet('cluster')">cluster</span>
+              </div>
+            </div>
+
+            <!-- Quick Template Queries -->
+            <div class="schema-title" style="margin-top: 18px;">
+              <span>⚡ Quick Query Templates</span>
+            </div>
+
+            <div class="template-item" onclick="loadTemplate(1)">
+              <span>⭐</span> Top 10 High Spenders in Lagos
+            </div>
+            <div class="template-item" onclick="loadTemplate(2)">
+              <span>💰</span> Balance by Account Type
+            </div>
+            <div class="template-item" onclick="loadTemplate(3)">
+              <span>📅</span> Monthly Salary Credits
+            </div>
+            <div class="template-item" onclick="loadTemplate(4)">
+              <span>💤</span> Dormant High-Balance Accounts
+            </div>
+            <div class="template-item" onclick="loadTemplate(5)">
+              <span>👑</span> Customers per RFM Tier
+            </div>
+            <div class="template-item" onclick="loadTemplate(6)">
+              <span>🔗</span> 3-Table Join (Cust + Acc + Txn)
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive SQL Editor & Live Results -->
+          <div>
+            <div class="editor-wrapper">
+              <div class="editor-toolbar">
+                <div style="font-size: 12.5px; font-weight: 600; color: #94a3b8; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--cyan-neon);">SQL Query Console</span>
+                  <span style="font-size: 11px; opacity: 0.6;">(Press Ctrl+Enter or Cmd+Enter to Run)</span>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-secondary" onclick="clearEditor()">
+                    <span>🧹</span> Clear
+                  </button>
+                  <button class="btn-secondary" onclick="copySqlQuery()">
+                    <span>📋</span> Copy
+                  </button>
+                  <button class="btn-run" onclick="runCustomQuery()">
+                    <span>▶</span> Run SQL Query
+                  </button>
+                </div>
+              </div>
+
+              <textarea id="customSqlInput" class="sql-textarea" spellcheck="false" placeholder="Write any SQL query here... (e.g. SELECT * FROM customers LIMIT 10;)">SELECT 
+    c.customer_id,
+    c.name,
+    c.city,
+    COUNT(t.transaction_id) AS total_transactions,
+    ROUND(SUM(t.amount), 2) AS total_spent,
+    ROUND(AVG(t.amount), 2) AS avg_ticket_size
+FROM customers c
+JOIN accounts a ON c.customer_id = a.customer_id
+JOIN transactions t ON a.account_id = t.account_id
+WHERE t.transaction_type = 'debit' AND c.city = 'Lagos'
+GROUP BY c.customer_id, c.name, c.city
+ORDER BY total_spent DESC
+LIMIT 10;</textarea>
+            </div>
+
+            <!-- Execution Status Bar -->
+            <div class="studio-status-bar">
+              <div class="engine-indicator">
+                <div class="engine-dot" id="engineDot"></div>
+                <span id="engineStatusText">SQL Engine: Initializing WebAssembly SQLite...</span>
+              </div>
+
+              <div style="display: flex; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">
+                <span id="statLatency">Latency: -- ms</span>
+                <span id="statRows">Rows: --</span>
+                <span id="statCols">Cols: --</span>
+              </div>
+
+              <div>
+                <button class="btn-secondary" onclick="exportResultsToCSV()" style="padding: 4px 10px; font-size: 11.5px;">
+                  <span>📥</span> Export CSV
+                </button>
+              </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="sqlErrorBox" class="sql-error-box"></div>
+
+            <!-- Results Table Container -->
+            <div class="table-responsive" style="max-height: 520px;">
+              <table id="customSqlResultsTable">
+                <thead id="customSqlThead">
+                  <tr><th>Run a query to see live results</th></tr>
+                </thead>
+                <tbody id="customSqlTbody">
+                  <tr><td style="color: #64748b;">Ready to execute. Click "Run SQL Query" or press Ctrl+Enter.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: RFM SEGMENTATION MATRIX -->
     <div id="tab-rfm" class="tab-content">
       <div class="panel">
         <div class="panel-header">
@@ -666,7 +1062,7 @@
       </div>
     </div>
 
-    <!-- TAB 3: REGIONAL & GEOSPATIAL -->
+    <!-- TAB 4: REGIONAL & GEOSPATIAL -->
     <div id="tab-regional" class="tab-content">
       <div class="charts-grid-2">
         <div class="panel">
@@ -695,7 +1091,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: CUSTOMER EXPLORER -->
+    <!-- TAB 5: CUSTOMER EXPLORER -->
     <div id="tab-customers" class="tab-content">
       <div class="panel">
         <div class="panel-header">
@@ -730,13 +1126,13 @@
       </div>
     </div>
 
-    <!-- TAB 5: SQL QUERY PLAYGROUND -->
+    <!-- TAB 6: CURATED SQL QUERY CATALOG -->
     <div id="tab-sql" class="tab-content">
       <div class="panel">
         <div class="panel-header">
           <div>
-            <div class="panel-title">⚡ Interactive SQL Query Benchmarking Playground</div>
-            <div class="panel-subtitle">Inspect query structures, business purposes, and verified execution results</div>
+            <div class="panel-title">⚡ Curated Analytical SQL Query Benchmarks</div>
+            <div class="panel-subtitle">Inspect pre-built enterprise SQL patterns, window functions, and validated benchmark outputs</div>
           </div>
         </div>
 
@@ -745,23 +1141,13 @@
           <select id="querySelect" onchange="loadQueryDetails()" style="flex: 1; max-width: 500px;">
             <option value="1">Q01: Total Spend Per Customer (Debit Outflow)</option>
             <option value="2">Q02: Salary Trend Analysis (12-Month Liquidity Benchmark)</option>
-            <option value="3">Q03: Most Active Accounts by Transaction Count</option>
-            <option value="4">Q04: Most Active Accounts by Transaction Volume</option>
-            <option value="5">Q05: Monthly Transaction Breakdown (Inflow vs Outflow)</option>
-            <option value="6">Q06: Yearly Transaction Growth &amp; Velocity</option>
-            <option value="7">Q07: Top 20 High-Value Customers (Credit Inflow)</option>
-            <option value="8">Q08: Dormant Accounts Identification (&gt;12 Months Inactivity)</option>
-            <option value="9">Q09: Single-Product Customers (Cross-Sell Index)</option>
-            <option value="10">Q10: Channel &amp; Payment Description Frequency</option>
             <option value="11">Q11: City-Wise Banking Performance Metrics</option>
             <option value="12">Q12: Highest Spender Per City (Window Function CTE)</option>
-            <option value="13">Q13: Cumulative Running Balance (Window Cash Flow)</option>
             <option value="14">Q14: Month-over-Month Growth Rate (MoM % via LAG)</option>
-            <option value="15">Q15: Customer Lifetime Value (CLV) &amp; Margin Estimation</option>
           </select>
 
           <button class="btn-run" onclick="executeSelectedQuery()">
-            <span>▶</span> Run Query Engine
+            <span>▶</span> Run Benchmark
           </button>
         </div>
 
@@ -810,14 +1196,303 @@
       if (targetContent) targetContent.classList.add('active');
     }
 
-    // Initialize Dashboard with BANK_DATA
+    // Global SQL Engine Instance
+    let sqlDb = null;
+    let lastQueryResult = null;
+
+    // Initialize Dashboard
     window.addEventListener('DOMContentLoaded', () => {
       initCharts();
       populateCustomerTable();
       loadQueryDetails();
       executeSelectedQuery();
+      initSqlEngine();
+
+      // Keyboard shortcut Ctrl+Enter / Cmd+Enter to execute query
+      document.getElementById('customSqlInput').addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          runCustomQuery();
+        }
+      });
     });
 
+    // Initialize WebAssembly SQLite Engine
+    async function initSqlEngine() {
+      const statusText = document.getElementById('engineStatusText');
+      const statusDot = document.getElementById('engineDot');
+
+      try {
+        statusText.textContent = "Loading WebAssembly SQLite (sql.js)...";
+        const SQL = await initSqlJs({
+          locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/${file}`
+        });
+
+        // Attempt 1: Fetch the pre-built SQLite DB file (works on GitHub Pages / HTTP server)
+        try {
+          const res = await fetch('data/bank_analytics.db');
+          if (res.ok) {
+            const buf = await res.arrayBuffer();
+            sqlDb = new SQL.Database(new Uint8Array(buf));
+            statusText.textContent = "SQL Engine: SQLite 3.38+ WebAssembly (Full DB: 6,000 Txns Loaded)";
+            statusDot.style.background = "#10b981";
+            statusDot.style.boxShadow = "0 0 10px #10b981";
+            runCustomQuery();
+            return;
+          }
+        } catch (fetchErr) {
+          console.warn("Direct DB fetch skipped or blocked (e.g. file:/// protocol). Using in-memory seed tables.", fetchErr);
+        }
+
+        // Attempt 2: In-Memory Database Populated from BANK_DATA.tables (works 100% offline & local file:///)
+        sqlDb = new SQL.Database();
+        seedInMemoryDatabase(sqlDb);
+        statusText.textContent = "SQL Engine: SQLite 3.38+ WebAssembly (In-Memory Fallback Active)";
+        statusDot.style.background = "#00f2fe";
+        statusDot.style.boxShadow = "0 0 10px #00f2fe";
+        runCustomQuery();
+
+      } catch (err) {
+        console.error("SQL initialization error:", err);
+        statusText.textContent = "SQL Engine Status: " + err.message;
+        statusDot.style.background = "#f43f5e";
+        statusDot.style.boxShadow = "0 0 10px #f43f5e";
+      }
+    }
+
+    // Fallback In-Memory Seeder
+    function seedInMemoryDatabase(db) {
+      if (!BANK_DATA || !BANK_DATA.tables) return;
+
+      db.run(`
+        CREATE TABLE customers (
+          customer_id INTEGER PRIMARY KEY,
+          name TEXT,
+          gender TEXT,
+          dob TEXT,
+          signup_date TEXT,
+          city TEXT
+        );
+
+        CREATE TABLE accounts (
+          account_id INTEGER PRIMARY KEY,
+          customer_id INTEGER,
+          account_number TEXT,
+          account_type TEXT,
+          open_date TEXT,
+          balance NUMERIC
+        );
+
+        CREATE TABLE transactions (
+          transaction_id INTEGER PRIMARY KEY,
+          account_id INTEGER,
+          transaction_date TEXT,
+          amount NUMERIC,
+          transaction_type TEXT,
+          description TEXT
+        );
+
+        CREATE TABLE customer_rfm_segments (
+          customer_id INTEGER,
+          name TEXT,
+          city TEXT,
+          gender TEXT,
+          signup_date TEXT,
+          total_txns INTEGER,
+          total_accounts INTEGER,
+          last_txn_date TEXT,
+          total_spent NUMERIC,
+          total_inflow NUMERIC,
+          total_volume NUMERIC,
+          avg_txn_value NUMERIC,
+          total_balance NUMERIC,
+          recency INTEGER,
+          frequency INTEGER,
+          monetary NUMERIC,
+          r_score INTEGER,
+          f_score INTEGER,
+          m_score INTEGER,
+          rfm_score TEXT,
+          segment TEXT,
+          cluster INTEGER
+        );
+      `);
+
+      // Insert customers
+      const stmtCust = db.prepare("INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?)");
+      BANK_DATA.tables.customers.forEach(r => stmtCust.run(r));
+      stmtCust.free();
+
+      // Insert accounts
+      const stmtAcc = db.prepare("INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)");
+      BANK_DATA.tables.accounts.forEach(r => stmtAcc.run(r));
+      stmtAcc.free();
+
+      // Insert transactions
+      const stmtTxn = db.prepare("INSERT INTO transactions VALUES (?, ?, ?, ?, ?, ?)");
+      BANK_DATA.tables.transactions.forEach(r => stmtTxn.run(r));
+      stmtTxn.free();
+
+      // Insert RFM
+      const stmtRfm = db.prepare("INSERT INTO customer_rfm_segments VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      BANK_DATA.tables.customer_rfm_segments.forEach(r => stmtRfm.run(r));
+      stmtRfm.free();
+    }
+
+    // Execute User's Custom SQL Query
+    function runCustomQuery() {
+      if (!sqlDb) {
+        showSqlError("SQL Engine is still initializing. Please wait a moment and try again.");
+        return;
+      }
+
+      const query = document.getElementById('customSqlInput').value.trim();
+      if (!query) {
+        showSqlError("Please enter a SQL query to execute.");
+        return;
+      }
+
+      hideSqlError();
+      const t0 = performance.now();
+
+      try {
+        const res = sqlDb.exec(query);
+        const elapsed = (performance.now() - t0).toFixed(2);
+
+        if (!res || res.length === 0) {
+          renderEmptyResults(elapsed);
+          return;
+        }
+
+        lastQueryResult = res[0];
+        renderCustomResults(res[0], elapsed);
+
+      } catch (err) {
+        const elapsed = (performance.now() - t0).toFixed(2);
+        document.getElementById('statLatency').textContent = `Latency: ${elapsed} ms`;
+        document.getElementById('statRows').textContent = "Rows: 0";
+        document.getElementById('statCols').textContent = "Cols: 0";
+        showSqlError("❌ SQL Syntax / Execution Error:\n" + err.message);
+      }
+    }
+
+    // Render Query Results in Table
+    function renderCustomResults(data, elapsedMs) {
+      const thead = document.getElementById('customSqlThead');
+      const tbody = document.getElementById('customSqlTbody');
+
+      document.getElementById('statLatency').textContent = `Latency: ${elapsedMs} ms`;
+      document.getElementById('statRows').textContent = `Rows: ${data.values.length}`;
+      document.getElementById('statCols').textContent = `Cols: ${data.columns.length}`;
+
+      thead.innerHTML = `<tr>${data.columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+
+      tbody.innerHTML = data.values.map(row => {
+        return `<tr>${row.map((val, idx) => {
+          const colName = data.columns[idx].toLowerCase();
+          let displayVal = val !== null && val !== undefined ? val : '<span style="color:#64748b; font-style:italic;">NULL</span>';
+          
+          // Format monetary numbers nicely
+          if (typeof val === 'number' && (colName.includes('balance') || colName.includes('spent') || colName.includes('amount') || colName.includes('volume') || colName.includes('monetary'))) {
+            displayVal = '₦' + val.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+          }
+          return `<td>${displayVal}</td>`;
+        }).join('')}</tr>`;
+      }).join('');
+    }
+
+    function renderEmptyResults(elapsedMs) {
+      document.getElementById('statLatency').textContent = `Latency: ${elapsedMs} ms`;
+      document.getElementById('statRows').textContent = "Rows: 0";
+      document.getElementById('statCols').textContent = "Cols: 0";
+
+      document.getElementById('customSqlThead').innerHTML = `<tr><th>Notice</th></tr>`;
+      document.getElementById('customSqlTbody').innerHTML = `<tr><td style="color: #94a3b8; font-style: italic;">Query executed successfully with 0 rows returned.</td></tr>`;
+    }
+
+    function showSqlError(msg) {
+      const errBox = document.getElementById('sqlErrorBox');
+      errBox.textContent = msg;
+      errBox.style.display = 'block';
+    }
+
+    function hideSqlError() {
+      const errBox = document.getElementById('sqlErrorBox');
+      errBox.style.display = 'none';
+    }
+
+    function clearEditor() {
+      document.getElementById('customSqlInput').value = '';
+      document.getElementById('customSqlInput').focus();
+    }
+
+    function copySqlQuery() {
+      const sql = document.getElementById('customSqlInput').value;
+      navigator.clipboard.writeText(sql).then(() => {
+        alert("Query copied to clipboard!");
+      });
+    }
+
+    function insertSnippet(text) {
+      const textarea = document.getElementById('customSqlInput');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const current = textarea.value;
+
+      textarea.value = current.substring(0, start) + text + current.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + text.length;
+    }
+
+    // Quick Query Templates
+    const TEMPLATES = {
+      1: `-- Top 10 Spenders in Lagos\nSELECT c.customer_id, c.name, c.city, ROUND(SUM(t.amount), 2) AS total_spent, COUNT(*) as debit_count\nFROM customers c\nJOIN accounts a ON c.customer_id = a.customer_id\nJOIN transactions t ON a.account_id = t.account_id\nWHERE t.transaction_type = 'debit' AND c.city = 'Lagos'\nGROUP BY c.customer_id, c.name, c.city\nORDER BY total_spent DESC\nLIMIT 10;`,
+      
+      2: `-- Total & Average Balance by Account Type\nSELECT account_type, COUNT(*) AS total_accounts, ROUND(SUM(balance), 2) AS total_balance, ROUND(AVG(balance), 2) AS avg_balance\nFROM accounts\nGROUP BY account_type\nORDER BY total_balance DESC;`,
+      
+      3: `-- Monthly Salary Disbursement Trend\nSELECT substr(transaction_date, 1, 7) AS month, COUNT(*) AS salary_payments, ROUND(SUM(amount), 2) AS total_salary_credited, ROUND(AVG(amount), 2) AS avg_salary\nFROM transactions\nWHERE transaction_type = 'credit' AND LOWER(description) LIKE '%salary credited%'\nGROUP BY month\nORDER BY month DESC\nLIMIT 12;`,
+      
+      4: `-- Dormant Accounts Inactive > 12 Months with Balance > ₦50,000\nSELECT c.customer_id, c.name, c.city, a.account_number, a.account_type, a.balance, MAX(t.transaction_date) as last_txn\nFROM customers c\nJOIN accounts a ON c.customer_id = a.customer_id\nLEFT JOIN transactions t ON a.account_id = t.account_id\nWHERE a.balance > 50000\nGROUP BY c.customer_id, c.name, c.city, a.account_number, a.account_type, a.balance\nHAVING MAX(t.transaction_date) < date('2026-10-29', '-12 months') OR MAX(t.transaction_date) IS NULL\nORDER BY a.balance DESC\nLIMIT 15;`,
+      
+      5: `-- Count of Customers per Algorithmic RFM Segment\nSELECT segment, COUNT(*) AS customer_count, ROUND(AVG(recency), 1) AS avg_days_recency, ROUND(AVG(frequency), 1) AS avg_txn_freq, ROUND(AVG(total_balance), 2) AS avg_liquid_balance\nFROM customer_rfm_segments\nGROUP BY segment\nORDER BY customer_count DESC;`,
+      
+      6: `-- 3-Table Relational Join: Customer Profile + Subsidiary Accounts + Recent Transactions\nSELECT c.name, c.city, a.account_number, a.account_type, t.transaction_date, t.amount, t.transaction_type, t.description\nFROM customers c\nJOIN accounts a ON c.customer_id = a.customer_id\nJOIN transactions t ON a.account_id = t.account_id\nORDER BY t.transaction_date DESC\nLIMIT 15;`
+    };
+
+    function loadTemplate(idx) {
+      const sql = TEMPLATES[idx];
+      if (sql) {
+        document.getElementById('customSqlInput').value = sql;
+        runCustomQuery();
+      }
+    }
+
+    // Export Query Results to CSV
+    function exportResultsToCSV() {
+      if (!lastQueryResult || !lastQueryResult.values || lastQueryResult.values.length === 0) {
+        alert("No results to export. Run a query first!");
+        return;
+      }
+
+      const headers = lastQueryResult.columns.join(',');
+      const rows = lastQueryResult.values.map(r => {
+        return r.map(cell => {
+          if (cell === null || cell === undefined) return '""';
+          const str = String(cell).replace(/"/g, '""');
+          return `"${str}"`;
+        }).join(',');
+      }).join('\n');
+
+      const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(headers + '\n' + rows);
+      const link = document.createElement("a");
+      link.setAttribute("href", csvContent);
+      link.setAttribute("download", `sql_query_result_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Charts Initialization
     function initCharts() {
       if (typeof BANK_DATA === 'undefined') return;
 
@@ -993,7 +1668,7 @@
       });
     }
 
-    // SQL Playground Catalog
+    // SQL Catalog for Tab 6
     const SQL_CATALOG = {
       1: {
         title: "Total Spend Per Customer (Debit Outflow)",

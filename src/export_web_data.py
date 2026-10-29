@@ -4,6 +4,7 @@ import os
 
 DB_PATH = "/Users/makshaysharma/Downloads/Bank-Segmentation-Analysis-main/data/bank_analytics.db"
 conn = sqlite3.connect(DB_PATH)
+cur = conn.cursor()
 
 # 1. KPIs
 kpis = {
@@ -18,7 +19,6 @@ kpis = {
 }
 
 # 2. Monthly Trend
-cur = conn.cursor()
 cur.execute("""
 SELECT 
     substr(transaction_date, 1, 7) as month,
@@ -84,18 +84,43 @@ LIMIT 8
 """)
 channels = [{"desc": r[0], "count": r[1], "vol": r[2]} for r in cur.fetchall()]
 
+# 7. Raw Tables for WebAssembly In-Memory SQLite Fallback
+cur.execute("SELECT customer_id, name, gender, dob, signup_date, city FROM customers")
+raw_customers = cur.fetchall()
+
+cur.execute("SELECT account_id, customer_id, account_number, account_type, open_date, balance FROM accounts")
+raw_accounts = cur.fetchall()
+
+cur.execute("SELECT transaction_id, account_id, transaction_date, amount, transaction_type, description FROM transactions LIMIT 2000")
+raw_transactions = cur.fetchall()
+
+cur.execute("""
+SELECT customer_id, name, city, gender, signup_date, total_txns, total_accounts,
+       last_txn_date, total_spent, total_inflow, total_volume, avg_txn_value,
+       total_balance, recency, frequency, monetary, r_score, f_score, m_score,
+       rfm_score, segment, cluster
+FROM customer_rfm_segments
+""")
+raw_rfm = cur.fetchall()
+
 data_bundle = {
     "kpis": kpis,
     "monthly": monthly,
     "cities": cities,
     "segments": segments,
     "customers": customers,
-    "channels": channels
+    "channels": channels,
+    "tables": {
+        "customers": raw_customers,
+        "accounts": raw_accounts,
+        "transactions": raw_transactions,
+        "customer_rfm_segments": raw_rfm
+    }
 }
 
 out_path = "/Users/makshaysharma/Downloads/Bank-Segmentation-Analysis-main/dashboard_data.js"
 with open(out_path, "w") as f:
-    f.write("const BANK_DATA = " + json.dumps(data_bundle, indent=2) + ";\n")
+    f.write("const BANK_DATA = " + json.dumps(data_bundle) + ";\n")
 
-print("Generated dashboard_data.js with size:", os.path.getsize(out_path), "bytes")
+print(f"Generated dashboard_data.js successfully! Size: {os.path.getsize(out_path):,} bytes")
 conn.close()
